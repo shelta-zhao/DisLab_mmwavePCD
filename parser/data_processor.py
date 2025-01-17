@@ -64,7 +64,7 @@ def range_fft(input, rangeFFTObj, device):
     # Convert input to tensorCreate output
     input = torch.tensor(input, dtype=torch.complex64).to(device)
     # Generate window coefficient
-    win_coeff = torch.tensor(np.hanning(input.shape[1] + 2)[1:-1], dtype=torch.float32).to(device)
+    win_coeff = torch.hann_window(input.shape[1] + 2, periodic=True).to(device)[1:-1]
     # Apply DC offset compensation
     input = input - torch.mean(input, dim=1, keepdim=True) if dc_on else input
     # Apply range-domain windowing
@@ -102,7 +102,7 @@ def doppler_fft(input, dopplerFFTObj, device):
     scale_on, scale_factor = dopplerFFTObj['FFTOutScaleOn'], dopplerFFTObj['scaleFactorDoppler']
 
     # Generate window coefficient
-    win_coeff = torch.tensor(np.hanning(input.shape[1] + 2)[1:-1], dtype=torch.float32).to(device)
+    win_coeff = torch.hann_window(input.shape[1] + 2, periodic=True).to(device)[1:-1]
     # Apply doppler-domain windowing
     input = input * win_coeff.view(-1, 1, 1, 1) if win_on else input
     # Perform FFT for each TX/RX chain
