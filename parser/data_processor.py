@@ -10,8 +10,8 @@ import yaml
 import torch
 import numpy as np
 import pandas as pd
-from param_generate import get_radar_params
-from data_loader import get_regular_data
+from parser.param_process import get_radar_params
+from parser.adc_load import get_regular_data
 import matplotlib.pyplot as plt
 
 
@@ -120,7 +120,7 @@ def angle_fft(rangeFFT_output, DOAObj):
     :param angleFFTObj: angle FFT object
     :return: angle FFT data
     """
-    angle_fft_data = angleFFTObj.angle_fft(rangeFFT_output)
+    angle_fft_data = angle_fft.angle_fft(rangeFFT_output)
     return angle_fft_data
 
 def CFAR(range_fft_data, CFARObj):
