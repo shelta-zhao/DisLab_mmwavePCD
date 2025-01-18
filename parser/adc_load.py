@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 import concurrent.futures
 from datetime import datetime
-from parser.param_process import generate_params
+from param_process import generate_params
 
 
 def get_regular_data(data_path, readObj, frame_idx='all', timestamp=False, save=False, load=False):
