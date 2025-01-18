@@ -1,0 +1,40 @@
+# .pylintrc configuration file for Pylint
+
+[MASTER]
+# Add customed pakages from repo path. 
+init-hook='import sys; sys.path.append("handler/")'
+init-hook='import sys; sys.path.append("module/")'
+
+[MESSAGES CONTROL]
+# Disable the specific warning for redefining names in the outer scope.
+disable=W0621
+
+[REPORTS]
+# Disable output reports: text|html|json|parseable
+output-format=text
+# Add additional options for the report.
+reports=no
+
+[LOGGING]
+# Logging levels to be used by Pylint. INFO|DEBUG|ERROR
+logging-level=INFO
+
+[TYPECHECK]
+# List of members which should be skipped when checking for types.
+generated-members=numpy.*,torch.*
+
+[DESIGN]
+# Maximum number of arguments for a function or method.
+max-args=5
+
+[FORMAT]
+# Maximum number of characters on a single line.
+max-line-length=100
+
+[VARIABLES]
+# Allow variable names that might be considered too long.
+variable-rgx=[a-z_][a-z0-9_]{2,30}$
+
+[SIMILARITIES]
+# Check for similar code between different parts of the project.
+min-similarity-lines=4
