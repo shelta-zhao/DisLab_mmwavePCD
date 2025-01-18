@@ -1,8 +1,8 @@
 """
-    Author      : Shelta Zhao(赵小棠)
-    Affiliation : Nanjing University
-    Email       : xiaotang_zhao@outlook.com
-    Description : Load & Get regular radar data.
+    Author        : Shelta Zhao(赵小棠)
+    Email         : xiaotang_zhao@outlook.com
+    Copyright (C) : NJU DisLab, 2025.
+    Description   : Load & Get regular radar data.
 """
 
 import os
@@ -281,10 +281,10 @@ def generate_regular_data(readObj, time_domain_datas):
 if __name__  == "__main__":
 
     # Parse data config & Get readObj
-    with open("data2parse.yaml", "r") as file:
+    with open("adc_list.yaml", "r") as file:
         data = yaml.safe_load(file)
-    data_path = os.path.join("datas/adcDatas", f"{data['prefix']}/{data['index']}")
-    config_path = os.path.join("datas/configs", data["config"])
+    data_path = os.path.join("data/adc_data", f"{data['prefix']}/{data['index']}")
+    config_path = os.path.join("data/radar_config", data["config"])
     readObj = generate_params(config_path, data['radar'])['readObj']
 
     # Test timestamp extraction

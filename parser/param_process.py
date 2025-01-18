@@ -1,8 +1,8 @@
 """
-    Author      : Shelta Zhao(赵小棠)
-    Affiliation : Nanjing University
-    Email       : xiaotang_zhao@outlook.com
-    Description : Parses mmWave Studio config JSON files.
+    Author        : Shelta Zhao(赵小棠)
+    Email         : xiaotang_zhao@outlook.com
+    Copyright (C) : NJU DisLab, 2025.
+    Description   : Parses mmWave Studio config JSON files.
 """
 
 import os
@@ -616,13 +616,14 @@ def save_params(radar_params, config_path):
 if __name__ == "__main__":
     
     # Parse radar config
-    with open("data2parse.yaml", "r") as file:
+    with open("adc_list.yaml", "r") as file:
         data = yaml.safe_load(file)
-    config_path = os.path.join("datas/configs", data["config"])
+    config_path = os.path.join("data/radar_config", data["config"])
     
     # Test generate params
     radar_params = generate_params(config_path, data['radar'])
     if not radar_params:
         print("Invalid JSON files")
     else:
-        print(radar_params)
+        print(yaml.dump(radar_params))
+

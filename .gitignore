@@ -1,4 +1,4 @@
-# radar data
+#  File Ignore Addition
 /data
 *.jpg
 *.png
@@ -6,6 +6,7 @@
 *.csv
 *.json
 *.mat
+*.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
