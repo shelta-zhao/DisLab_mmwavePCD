@@ -6,10 +6,12 @@
 """
 
 import os
+import sys
 import yaml
 import torch
-from parser.param_process import get_radar_params
-from parser.adc_load import get_regular_data
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
+from handler.param_process import get_radar_params
+from handler.adc_load import get_regular_data
 
 
 class FFTProcessor:

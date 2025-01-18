@@ -11,6 +11,7 @@ import json
 import numpy as np
 from datetime import datetime, timezone, timedelta
 
+
 def get_radar_params(config_path, radar_type, save=False, load=False):
     """
     Head Function: Get radar params.

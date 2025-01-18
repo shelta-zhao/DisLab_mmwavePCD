@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 import concurrent.futures
 from datetime import datetime
-from param_process import generate_params
+from handler.param_process import get_radar_params
 
 
 def get_regular_data(data_path, readObj, frame_idx='all', timestamp=False, save=False, load=False):
@@ -285,7 +285,7 @@ if __name__  == "__main__":
         data = yaml.safe_load(file)
     data_path = os.path.join("data/adc_data", f"{data['prefix']}/{data['index']}")
     config_path = os.path.join("data/radar_config", data["config"])
-    readObj = generate_params(config_path, data['radar'])['readObj']
+    readObj = get_radar_params(config_path, data['radar'])['readObj']
 
     # Test timestamp extraction
     timestamp = get_timestamps(data_path)
