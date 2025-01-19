@@ -190,7 +190,6 @@ def generate_params(config_path, radar_type):
         'dopplerWindowEnable': 0,
         'FFTOutScaleOn': 0,
         'scaleFactorDoppler': scale_factor[int(np.log2(doppler_fft_size)) - 4],
-        'clutterRemoveOn': 1
     }
 
     # CFAR-CASO parameters

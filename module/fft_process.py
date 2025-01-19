@@ -29,6 +29,27 @@ class FFTProcessor:
         self.dopplerFFTObj = dopplerFFTObj
         self.device = device
 
+    def run(self, input):
+        """
+        Perform Range & Doppler FFT on the input data.
+
+        Parameters:
+            input (np.ndarray): The input data to be transformed.
+
+        Returns:
+            torch.Tensor: The FFT result. Shape: (num_frames, range_fft_size, doppler_fft_size, num_rx, num_tx)
+        """
+
+        # Perform Range FFT
+        range_fft_output = self.range_fft(input)
+
+        # Perform Doppler FFT
+        doppler_fft_out = self.doppler_fft(range_fft_output)
+
+        # Return FFT Result
+        return doppler_fft_out
+
+
     def range_fft(self, input):
         """
         Perform Range FFT on the input data.
