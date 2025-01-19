@@ -49,7 +49,6 @@ class FFTProcessor:
         # Return FFT Result
         return doppler_fft_out
 
-
     def range_fft(self, input):
         """
         Perform Range FFT on the input data.
