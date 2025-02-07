@@ -168,7 +168,7 @@ class DOAProcessor:
 
                 for peak in peakLoc_ele:
                     # Calculate angles
-                    azi_est = torch.arcsin(self.wx_vec[ind] / (2 * torch.pi * self.d)) * -1 * 180 / torch.pi
+                    azi_est = torch.arcsin(self.wx_vec[ind] / (2 * torch.pi * self.d)) * 180 / torch.pi
                     ele_est = torch.arcsin(self.wz_vec[peak] / (2 * torch.pi * self.d)) * 180 / torch.pi
 
                     if (self.angles_DOA_azi[0] <= azi_est <= self.angles_DOA_azi[1] and self.angles_DOA_ele[0] <= ele_est <= self.angles_DOA_ele[1]):

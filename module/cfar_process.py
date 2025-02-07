@@ -146,7 +146,7 @@ class CFARProcessor:
         sig_integrate = torch.sum(torch.abs(input)**2, dim=2) + 1
         M_Samp, N_Pul = sig_integrate.shape[0], sig_integrate.shape[1]
         cellNum, gapNum, K0 = self.detectObj['refWinSize'][0], self.detectObj['guardWinSize'][0], self.detectObj['K0'][0]
-        discardCellLeft, discardCellRight = self.detectObj['discardCellLeft'], self.detectObj['discardCellRight']
+        discardCellLeft, discardCellRight = self.detectObj['discardCellLeft'][0], self.detectObj['discardCellRight'][0]
         gaptot = gapNum + cellNum
 
         # Get return features for detected objects
@@ -200,7 +200,7 @@ class CFARProcessor:
         # Retrieve parameters for doppler CFAR
         sig_integrate = torch.sum(torch.abs(input)**2, dim=2) + 1
         cellNum, gapNum, K0 = self.detectObj['refWinSize'][1], self.detectObj['guardWinSize'][1], self.detectObj['K0'][1]
-        discardCellLeft, discardCellRight = self.detectObj['discardCellLeft'], self.detectObj['discardCellRight']
+        discardCellLeft, discardCellRight = self.detectObj['discardCellLeft'][1], self.detectObj['discardCellRight'][1]
         gaptot = gapNum + cellNum
 
         # Get detected range cells
