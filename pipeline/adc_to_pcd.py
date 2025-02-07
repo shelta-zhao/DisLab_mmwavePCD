@@ -48,7 +48,7 @@ def adc_to_pcd(adc_list, device, save=False, display=False):
         data_path = os.path.join("data/adc_data", f"{adc_data['prefix']}/{adc_data['index']}")
         config_path = os.path.join("data/radar_config", adc_data["config"])
         
-        radar_params = get_radar_params(config_path, adc_data['radar'])
+        radar_params = get_radar_params(config_path, adc_data['radar'], save=True)
         regular_data, _ = get_regular_data(data_path, radar_params['readObj'], 'all', timestamp=True)
 
         # Generate all module instances
