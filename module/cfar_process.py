@@ -36,25 +36,27 @@ class CFARProcessor:
         Perform CFAR-CASO on the 2D FFT result.
 
         Parameters:
-            input(torch.Tensor): FFT result. Shape: (range_fft_size, doppler_fft_size, num_rx, num_tx)
+            input(torch.Tensor): FFT result. Shape: (range_fft_size, doppler_fft_size, num_rx, num_tx).
             frameIdx(int): The frame index.
 
         Returns:
             torch.Tensor: detection result.
-            - 0 frameIdx: The frame index.
-            - 1 rangeInd: The range index.
-            - 2 range: The range value.
-            - 3 dopplerInd: The Doppler index.
-            - 4 doppler: The Doppler value.
-            - 5 noise_var: The noise variance.
-            - 6 signalPower: The signal power.
-            - 7 estSNR: The estimated SNR.   
-            - 8~end: The real and imaginary parts of the signal bin.
+                - 0 frameIdx: The frame index.
+                - 1 rangeInd: The range index.
+                - 2 range: The range value.
+                - 3 dopplerInd: The Doppler index.
+                - 4 doppler: The Doppler value.
+                - 5 noise_var: The noise variance.
+                - 6 signalPower: The signal power.
+                - 7 estSNR: The estimated SNR.   
+                - 8~end: The real and imaginary parts of the signal bin.
+            torch.Tensor: The non-coherent signal combination.
         """
 
         # Get non-coherent signal combination along the antenna array
         input = reshape_fortran(input, (input.shape[0], input.shape[1], input.shape[2] * input.shape[3]))
-
+        sig_integrate = torch.sum(torch.abs(input)**2, dim=2) + 1
+        
         # Switch on the dectect method
         if self.detectObj['detectMethod'] == 1:
 
@@ -124,7 +126,7 @@ class CFARProcessor:
                     detection_results[i_obj, 8 + sig_bin.numel():] = sig_bin.imag.view(-1)
 
                 # Return the detection results
-                return detection_results
+                return detection_results, sig_integrate
         else:
             raise ValueError("Unknown Detect Method!")
 

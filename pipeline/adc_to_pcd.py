@@ -61,7 +61,7 @@ def adc_to_pcd(adc_list, device, save=False, display=False):
     
         # Perform CFAR-CASO detection
         for frameIdx in tqdm(range(fft_output.shape[0]), desc="Processing frames"):
-            detection_results = cfar_processor.run(fft_output[frameIdx,:radar_params['detectObj']['rangeFFTSize'] // 2,:,:,:], frameIdx)
+            detection_results, _ = cfar_processor.run(fft_output[frameIdx,:radar_params['detectObj']['rangeFFTSize'] // 2,:,:,:], frameIdx)
 
             # Perform DOA Estimation
             doa_results = doa_processor.run(detection_results)
