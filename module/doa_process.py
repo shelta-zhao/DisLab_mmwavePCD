@@ -46,7 +46,7 @@ class DOAProcessor:
         self.wz_vec = torch.linspace(-torch.pi, torch.pi, self.doa_fft_size + 1)[:-1]
         self.antenna_azimuthonly = DOAObj['antenna_azimuthonly']
 
-    def run(self, detection_results, save=False, load=False):
+    def run(self, detection_results, save=False, load=False, denoise=False):
         """
         Run the DOA Estimation on the given detection results.
 
@@ -54,9 +54,10 @@ class DOAProcessor:
             detection_results (list): The detection results from CFAR Processor.
             save (bool): Whether to save the results to a file.
             load (bool): Whether to load the results from a file.
+            denoise (bool): Whether to remove noise from the DOA estimation results.
 
         Returns:
-            point cloud data (list): The DOA estimation results.
+            point cloud data (np.ndarray): The DOA estimation results.
             1. frameIdx: Frame index
             2. objectIdx: Object index
             3. x: X coordinate
@@ -107,6 +108,10 @@ class DOAProcessor:
         if not doa_estimate_result:
             return np.array([])
         
+        # Remove noise
+        if denoise:
+            doa_estimate_result = self.remove_noise(doa_estimate_result)
+
         # Initialize the output array
         point_cloud_data = np.zeros((len(doa_estimate_result), 14))
 
@@ -176,6 +181,40 @@ class DOAProcessor:
                         obj_cnt += 1
             
         return DOAObj_est.cpu(), angle_sepc_2D_fft.cpu()
+
+    def remove_noise(self, doa_estimate_result, angle_threshold=4):
+        """
+        Remove noise from the DOA estimation results.
+
+        Parameters:
+            doa_estimate_result (list): The DOA estimation results.
+            angle_threshold (int): The threshold for angle difference.
+        
+        Returns:
+            doa_result_filtered (list): The filtered DOA estimation results.
+        """
+
+        # Remove noise from the DOA estimation results
+        doa_result_filtered = []
+        for i, point1 in enumerate(doa_estimate_result):
+            range1, snr1 = point1['rangeInd'], point1['estSNR']
+
+            for j, point2 in enumerate(doa_estimate_result):
+                if i == j:
+                    continue
+
+                range2, snr2 = point2['rangeInd'], point2['estSNR']
+                az_diff = abs(point1['angles'][2] - point2['angles'][2])
+                el_diff = abs(point1['angles'][3] - point2['angles'][3])
+
+                # Compare the two points
+                if az_diff <= angle_threshold and el_diff <= angle_threshold and range1 > range2 and snr1 < snr2:
+                    break
+            else:
+                doa_result_filtered.append(point1)
+
+        return doa_result_filtered
+
 
         
 if __name__ == "__main__":
