@@ -43,8 +43,9 @@ def peak_detect(input, gamma, sidelobeLevel_dB):
     - peakLoc: Tensor containing the locations (indices) of the detected peaks
     """
 
-    minVal, maxVal, maxLoc, maxLoc_r = torch.tensor(float('inf'), dtype=torch.float64), torch.tensor(0.0), 0, 0
-    absMaxValue, locateMax, initStage, maxData, extendLoc = torch.tensor(0.0), False, True, torch.tensor([]), 0
+    device = torch.device(input.device)
+    minVal, maxVal, maxLoc, maxLoc_r = torch.tensor(float('inf'), dtype=torch.float64, device=device), torch.tensor(0.0, device=device), 0, 0
+    absMaxValue, locateMax, initStage, maxData, extendLoc = torch.tensor(0.0, device=device), False, True, torch.tensor([], device=device), 0
 
     N = input.shape[0]
     for i in count(0):
@@ -64,7 +65,7 @@ def peak_detect(input, gamma, sidelobeLevel_dB):
 
         if locateMax:
             if currentVal < (maxVal / gamma):  # Peak found
-                maxData = torch.cat((maxData, torch.tensor([[maxLoc, maxVal, i - maxLoc_r, maxLoc_r]])), dim=0)
+                maxData = torch.cat((maxData, torch.tensor([[maxLoc, maxVal, i - maxLoc_r, maxLoc_r]], device=device)), dim=0)
                 minVal = currentVal
                 locateMax = False
         else:
@@ -80,7 +81,7 @@ def peak_detect(input, gamma, sidelobeLevel_dB):
     maxData = maxData[maxData[:, 1] >= absMaxValue_db] if len(maxData) > 0 else maxData
 
     # Convert results to torch tensors
-    peakVal, peakLoc = torch.tensor([], dtype=torch.float64), torch.tensor([], dtype=torch.long)
+    peakVal, peakLoc = torch.tensor([], dtype=torch.float64, device=device), torch.tensor([], dtype=torch.long, device=device)
     if len(maxData) > 0:
         peakVal = maxData[:, 1].clone().detach().to(torch.float64)
         peakLoc = (maxData[:, 0] % N).clone().detach().to(torch.long)

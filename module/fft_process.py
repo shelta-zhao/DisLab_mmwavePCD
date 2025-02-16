@@ -29,8 +29,6 @@ class FFTProcessor:
         self.rangeFFTObj = rangeFFTObj
         self.dopplerFFTObj = dopplerFFTObj
         self.device = device
-        
-        # Get the FFT parameters
 
     def run(self, input):
         """

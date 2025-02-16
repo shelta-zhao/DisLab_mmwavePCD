@@ -142,11 +142,21 @@ class DOAProcessor:
         return point_cloud_data
     
     def DOA_beamformingFFT(self, bin_val):
+        """
+        Perform DOA estimation using 2D Angle FFT.
+
+        Parameters:
+            bin_val (torch.Tensor): The input signal data.
+        
+        Returns:
+            DOAObj_est (np.ndarray): The DOA estimation results.
+            angle_sepc_2D_fft (np.ndarray): The 2D Angle FFT result.
+        """
         
         # Get the DOA radar parameters
         apertureLen_azi = torch.max(self.D[:, 0]).item() + 1  
         apertureLen_ele = torch.max(self.D[:, 1]).item() + 1
-        sig_2D = torch.zeros(apertureLen_azi, apertureLen_ele, dtype=torch.complex64)
+        sig_2D = torch.zeros(apertureLen_azi, apertureLen_ele, dtype=torch.complex64, device=self.device)
         sig_2D[self.D[:, 0], self.D[:, 1]] = bin_val
 
         # Perform 2D Angle FFT
@@ -180,7 +190,7 @@ class DOAProcessor:
                         DOAObj_est = torch.cat((DOAObj_est, torch.tensor([azi_est, ele_est, ind, peak], device=self.device).unsqueeze(0)))
                         obj_cnt += 1
             
-        return DOAObj_est.cpu(), angle_sepc_2D_fft.cpu()
+        return DOAObj_est.cpu().numpy(), angle_sepc_2D_fft.cpu().numpy()
 
     def remove_noise(self, doa_estimate_result, angle_threshold=4):
         """
