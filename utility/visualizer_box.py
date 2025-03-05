@@ -1,87 +1,14 @@
 """
-    Author      : Shelta Zhao(赵小棠)
-    Affiliation : Nanjing University
-    Email       : xiaotang_zhao@outlook.com
-    Description : This script converts radar data to Point Cloud Data (PCD) format.
+    Author        : Shelta Zhao(赵小棠)
+    Email         : xiaotang_zhao@outlook.com
+    Copyright (C) : NJU DisLab, 2025.
+    Description   : This script converts radar data to Point Cloud Data (PCD) format.
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-
-def fft_display(fft_output):
-    """
-    Plot the 3D Range-Doppler FFT Spectrum.
-
-    Parameters:
-    - fft_output: A tensor of shape (range_fft_size, doppler_fft_size).
-    """
-
-    # Get the magnitude of the FFT output
-    x, y = np.arange(fft_output.shape[0]), np.arange(fft_output.shape[1])
-    X, Y = np.meshgrid(x, y)
-
-    # Get the magnitude of the FFT output
-    Z = np.abs(fft_output.T)
-
-    # Create 3D plot
-    fig = plt.figure(figsize=(10, 6))
-    ax = fig.add_subplot(111, projection='3d')
-
-    # Draw 3D spectrum
-    ax.plot_surface(X, Y, Z, cmap='viridis')
-    ax.set_xlabel("Range FFT Bins")
-    ax.set_ylabel("Doppler FFT Bins")
-    ax.set_zlabel("Magnitude")
-
-    # Set title and show
-    ax.set_title("3D Range-Doppler FFT Spectrum")
-    plt.show()
-
-def detect_display(detection_results, sig_integrate):
-    """
-    Visualizes CFAR detection results alongside Doppler FFT output.
-
-    Parameters:
-    - detection_results: (N, 8) array
-    - fft_output: 2D array representing the Doppler FFT output
-    """
-
-    # Convert detection results to numpy
-    detection_results = detection_results.cpu().numpy()
-
-    # Extract data
-    range_inds = detection_results[:, 1]     # rangeInd
-    doppler_inds = detection_results[:, 3]   # dopplerInd
-    snr_values = detection_results[:, 7]     # estSNR
-    power_values = detection_results[:, 6]   # signalPower
-
-    # Normalize SNR for color mapping
-    snr_norm = (snr_values - snr_values.min()) / (snr_values.max() - snr_values.min() + 1e-6)
-    
-    # Normalize power to adjust marker sizes
-    power_norm = (power_values - power_values.min()) / (power_values.max() - power_values.min() + 1e-6)
-    marker_sizes = 20 + 20 * power_norm      # Scale marker size appropriately
-    
-    # Create the figure
-    plt.figure(figsize=(10, 6))
-    
-    # Display Doppler FFT output as a heatmap
-    plt.imshow(sig_integrate.T, aspect='auto', origin='lower', cmap='jet')
-    plt.colorbar(label="RDM Magnitude")
-    
-    # Overlay CFAR detections
-    plt.scatter(range_inds, doppler_inds, c=snr_norm, cmap='hot', edgecolors='white', s=marker_sizes, alpha=0.75)
-    plt.colorbar(label="Normalized SNR")
-    
-    # Axis labels and title
-    plt.xlabel("Doppler Index")
-    plt.ylabel("Range Index")
-    plt.title("CFAR Detections on Doppler FFT")
-    
-    # Show the visualization
-    plt.show()
 
 def PCD_display(point_cloud_data):
     """

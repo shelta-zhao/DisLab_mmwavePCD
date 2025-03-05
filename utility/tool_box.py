@@ -1,8 +1,8 @@
 """
-    Author      : Shelta Zhao(赵小棠)
-    Affiliation : Nanjing University
-    Email       : xiaotang_zhao@outlook.com
-    Description : This script defines all help functions.
+    Author        : Shelta Zhao(赵小棠)
+    Email         : xiaotang_zhao@outlook.com
+    Copyright (C) : NJU DisLab, 2025.
+    Description   : This script defines all help functions.
 """
 
 import torch

@@ -9,6 +9,8 @@ import os
 import sys
 import yaml
 import torch
+import numpy as np
+import matplotlib.pyplot as plt
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 from handler.param_process import get_radar_params
@@ -117,6 +119,38 @@ class FFTProcessor:
 
         # Return doppler fft result
         return fft_output
+    
+    def fft_display(self, fft_output):
+        """
+        Plot the 3D Range-Doppler FFT Spectrum.
+
+        Parameters:
+        - fft_output: A tensor of shape (range_fft_size, doppler_fft_size).
+        """
+
+        # Convert detection results to numpy
+        fft_output = fft_output.cpu().numpy()
+
+        # Get the magnitude of the FFT output
+        x, y = np.arange(fft_output.shape[0]), np.arange(fft_output.shape[1])
+        X, Y = np.meshgrid(x, y)
+
+        # Get the magnitude of the FFT output
+        Z = np.abs(fft_output.T)
+
+        # Create 3D plot
+        fig = plt.figure(figsize=(10, 6))
+        ax = fig.add_subplot(111, projection='3d')
+
+        # Draw 3D spectrum
+        ax.plot_surface(X, Y, Z, cmap='viridis')
+        ax.set_xlabel("Range FFT Bins")
+        ax.set_ylabel("Doppler FFT Bins")
+        ax.set_zlabel("Magnitude")
+
+        # Set title and show
+        ax.set_title("3D Range-Doppler FFT Spectrum")
+        plt.show()
 
 
 if __name__ == "__main__":
