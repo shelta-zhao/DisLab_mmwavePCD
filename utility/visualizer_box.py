@@ -2,7 +2,7 @@
     Author        : Shelta Zhao(赵小棠)
     Email         : xiaotang_zhao@outlook.com
     Copyright (C) : NJU DisLab, 2025.
-    Description   : This script converts radar data to Point Cloud Data (PCD) format.
+    Description   : This script defines functions for data visualization.
 """
 
 import numpy as np
@@ -42,9 +42,6 @@ def PCD_display(point_cloud_data):
     ax.set_xlabel('X (meters)')
     ax.set_ylabel('Y (meters)')
     ax.set_zlabel('Z (meters)')
-    # ax.set_xlim((-2, 2))
-    # ax.set_ylim((0, 3))
-    # ax.set_zlim((0, 3))
 
     # Set title and show
     ax.set_title('3D Point Cloud')
