@@ -365,5 +365,5 @@ if __name__ == "__main__":
     
     # Test CFAR-CASO
     cfar_processor = CFARProcessor(radar_params['detectObj'], device)
-    cfar_output = cfar_processor.run(fft_output[0,:256,:,:,:], 0)
+    cfar_output, _ = cfar_processor.run(fft_output[0,:256,:,:,:], 0)
     print(cfar_output.shape)

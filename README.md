@@ -21,7 +21,7 @@ Ensure you have the following installed:
 
    ```bash
    git clone git@github.com:shelta-zhao/dislab-mmPcd.git
-   cd DisLab_mmwavePCD
+   cd dislab-mmPcd
    ```
 
 2. Create the environment:
