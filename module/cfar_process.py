@@ -177,7 +177,7 @@ class CFARProcessor:
 
                 # Check if the signal exceeds the threshold
                 if vec[j + gaptot] > K0 * cellave1:
-                    if self.detectObj['maxEnable'] == 0 or vec[j + gaptot] > torch.max(vec[cellInda[0]:cellIndb[-1] + 1]):
+                    if self.detectObj['maxEnable'] == 0 or vec[j + gaptot] >= torch.max(vec[cellInda[0]:cellIndb[-1] + 1]):
                         N_obj += 1                                       # Increment object count
                         Ind_obj = torch.cat((Ind_obj, torch.tensor([j + discardCellLeft, k], device = self.device).unsqueeze(0)))
                         noise_obj = torch.cat((noise_obj, cellave1.unsqueeze(0)))
@@ -244,8 +244,8 @@ class CFARProcessor:
                 
                 # Check if the signal exceeds the threshold
                 if vec[j + gaptot] > K0 * cellave1:
-                    if self.detectObj['maxEnable'] == 0 or vec[j + gaptot] > torch.max(vec[cellInda[0]:cellIndb[-1] + 1]):
-                        if torch.isin(indR, j).any():
+                    if self.detectObj['maxEnable'] == 0 or vec[j + gaptot] >= torch.max(vec[cellInda[0]:cellIndb[-1] + 1]):
+                        if torch.isin(indR, j + discardCellLeft).any():
                             ind_loc_all = torch.cat((ind_loc_all, torch.tensor([range_bin_index], device=self.device)))
                             ind_loc_Dop = torch.cat((ind_loc_Dop, torch.tensor([j + discardCellLeft], device=self.device)))
 
